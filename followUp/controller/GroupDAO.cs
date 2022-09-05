@@ -18,11 +18,11 @@ namespace followUp.controller
             try
             {
                 dB = new DB();
-                dB.command.CommandText = "Insert into StudGroup(groupName, classDay, classTime) values(@n, @cd, @ct, bi)";
+                dB.command.CommandText = "Insert into StudGroup(groupName, classDay, classTime, bookId) values(@n, @cd, @ct, bi)";
                 dB.command.Parameters.Add("@n", NpgsqlDbType.Varchar).Value = g.name;
                 dB.command.Parameters.Add("@cd", NpgsqlDbType.Integer).Value = g.day;
                 dB.command.Parameters.Add("@ct", NpgsqlDbType.Time).Value = g.time;
-                //dB.command.Parameters.Add("@bi", NpgsqlDbType.Integer).Value = g.bookId;
+                dB.command.Parameters.Add("@bi", NpgsqlDbType.Integer).Value = g.bookId;
                 dB.command.Prepare();
                 returnValue = dB.command.ExecuteNonQuery();
                 DB.con.Close();
@@ -87,6 +87,48 @@ namespace followUp.controller
             catch (Exception ex)
             {
                 throw new Exception("Error when searching groups by name: " + ex.Message);
+            }
+        }
+        public int update(Group g)
+        {
+            DB dB = null;
+            int returnValue = 0;
+            try
+            {
+                dB = new DB();
+                dB.command.CommandText = "Update Studgroup set groupname=@n, classday=@cd, classtime=@ct, bookid=@bi where groupid=@gi";
+                dB.command.Parameters.Add("@n", NpgsqlDbType.Varchar).Value = g.name;
+                dB.command.Parameters.Add("@cd", NpgsqlDbType.Integer).Value = g.day;
+                dB.command.Parameters.Add("@ct", NpgsqlDbType.Time).Value = g.time;
+                dB.command.Parameters.Add("@bi", NpgsqlDbType.Integer).Value = g.bookId;
+                dB.command.Parameters.Add("@gi", NpgsqlDbType.Integer).Value = g.id;
+                dB.command.Prepare();
+                returnValue = dB.command.ExecuteNonQuery();
+                DB.con.Close();
+                return (returnValue);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error when updating group: " + ex.Message);
+            }
+        }
+        public int remove(int id)
+        {
+            DB dB = null;
+            int returnValue = 0;
+            try
+            {
+                dB = new DB();
+                dB.command.CommandText = "Delete from Group where groupid=@gi";
+                dB.command.Parameters.Add("@gi", NpgsqlDbType.Integer).Value = id;
+                dB.command.Prepare();
+                returnValue = dB.command.ExecuteNonQuery();
+                DB.con.Close();
+                return (returnValue);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error when removing group: " + ex.Message);
             }
         }
 

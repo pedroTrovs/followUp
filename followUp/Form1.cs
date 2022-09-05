@@ -94,6 +94,7 @@ namespace followUp
                 s.setGroupId(txtGroupId.Text);
                 operations = new StudentDAO();
                 operations.createGetId(s);
+                txtGroupId.Text = s.id.ToString();
                 updateDGV();
             }
             catch (Exception ex)
@@ -175,26 +176,6 @@ namespace followUp
             {
                 MessageBox.Show("Error at selecting student from list: " + ex.Message);
             }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
-
-                GroupDAO d = new GroupDAO();
-                Group g = new Group();
-
-                g.setName("catapimbass");
-                g.setDay(1);
-                g.setTime("10:00");
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("a: " + ex.Message);
-            }
-
         }
     }
 }
